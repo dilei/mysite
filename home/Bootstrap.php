@@ -15,9 +15,21 @@ class Bootstrap extends Yaf_Bootstrap_Abstract{
 		Yaf_Registry::set('config', $arrConfig);
 	}
 
-	public function _initPlugin(Yaf_Dispatcher $dispatcher) {
-		//注册一个插件
-		$objSamplePlugin = new SamplePlugin();
+
+    public function _initDefaultName(Yaf_Dispatcher $dispatcher) {
+        /**
+         *                  
+         * 这个只是举例, 本身Yaf默认的就是"Index"
+         */
+        // $dispatcher->setDefaultModule("Admin")->setDefaultController("User")->setDefaultAction("index");
+    }
+
+    public function _initPlugin(Yaf_Dispatcher $dispatcher) {
+        //注册一个插件
+        $objSamplePlugin = new SamplePlugin();
+        $dispatcher->registerPlugin($objSamplePlugin);
+
+        $objSamplePlugin = new UserPlugin();
 		$dispatcher->registerPlugin($objSamplePlugin);
 	}
 
