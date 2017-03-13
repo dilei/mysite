@@ -12,7 +12,7 @@ class UserController extends BaseController {
 		$get = $this->getRequest()->getQuery("get", "default value");
 
 		//2. fetch model
-		$model = new SampleModel();
+		$model = new Admin_SampleModel();
 
 		//3. assign
 		$this->getView()->assign("content", $model->selectSample());
