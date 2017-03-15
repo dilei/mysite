@@ -13,6 +13,11 @@ class Bootstrap extends Yaf_Bootstrap_Abstract{
 		//把配置保存起来
 		$arrConfig = Yaf_Application::app()->getConfig();
 		Yaf_Registry::set('config', $arrConfig);
+
+        // 加入自己的自动加载
+        // Yaf_Loader::import(APP_PATH . "/vendor/autoload.php");
+        /* 加载自定义函数 */
+        // Yaf_Loader::import("Helper.php");
 	}
 
 
