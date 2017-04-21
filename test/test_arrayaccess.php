@@ -1,4 +1,5 @@
 <?php
+// arrayaccess接口可以让你以访问数组的形式访问对象 
 class obj implements arrayaccess {
 
     private $name = 123;

@@ -1,5 +1,4 @@
 <?php
-
 define('APPLICATION_PATH', dirname(__FILE__));
 
 define('IS_CGI',(0 === strpos(PHP_SAPI,'cgi') || false !== strpos(PHP_SAPI,'fcgi')) ? 1 : 0 );
