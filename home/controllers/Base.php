@@ -9,5 +9,6 @@ class BaseController extends Yaf_Controller_Abstract {
      */
 	public function init() {
         // do somthing
+		$this->getView()->assign("static_path", "/public/static/");
 	}
 }

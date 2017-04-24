@@ -28,6 +28,9 @@ class IndexController extends BaseController {
         return TRUE;
 	}/*}}}*/
 
+    public function aboutAction() {
+    }
+
     public function setCrontab() {/*{{{*/
         $crontab = new CrontabManager();
         $job = $crontab->newJob();
