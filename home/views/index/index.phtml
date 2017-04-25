@@ -4,7 +4,9 @@
     <?php include "nav.phtml"; ?>
 
     <!-- Page Header -->
-    <!-- Set your background image for this header on the line below. -->
+    <!-- Set your background image for this header on the line below.
+
+     -->
     <header class="intro-header" style="background-image: url('<?=$static_path?>img/home-bg.jpg')">
         <div class="container">
             <div class="row">
@@ -12,7 +14,14 @@
                     <div class="site-heading">
                         <h1>Clean Blog</h1>
                         <hr class="small">
+                        <!--
                         <span class="subheading">A Clean Blog Theme by Start Bootstrap</span>
+                        -->
+
+                        <div class="input-group">  
+                            <input type="text" class="form-control" placeholder="请输入关键字"/>  
+                            <div data-handle="search" class="toolbar-handle input-group-addon btn-info">查找</div>  
+                         </div>  
                     </div>
                 </div>
             </div>
@@ -91,14 +100,25 @@
         require(['jquery', 'bootstrap'], function ($) {
         });
     </script>
-    -->
 
     <script src="<?=$static_path?>vendor/jquery/jquery.min.js"></script>
+    <script src="<?=$static_path?>vendor/requirejs/require.js"></script>
     <script src="<?=$static_path?>vendor/bootstrap/js/bootstrap.min.js"></script>
+    -->
+
+    <script src="https://cdn.bootcss.com/jquery/1.12.4/jquery.min.js"></script>
+    <script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 
     <script src="<?=$static_path?>js/jqBootstrapValidation.js"></script>
-    <script src="<?=$static_path?>js/contact_me.js"></script>
     <script src="<?=$static_path?>js/clean-blog.min.js"></script>
+
+    <script src="https://cdn.bootcss.com/require.js/2.3.3/require.js"></script>
+    <script src="<?=$static_path?>vendor/requirejs/main.js"></script>
+    <script type="text/javascript">
+        require(['index/index/index'], function(module) {
+            module.init();
+        });
+    </script>
 
 </body>
 

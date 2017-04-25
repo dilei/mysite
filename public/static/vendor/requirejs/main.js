@@ -1,7 +1,7 @@
 require.config({
-    baseUrl: "<?=$static_path?>",
+    baseUrl: "/public/static/js/module/",
     paths: {
-    　　"jquery": "vendor/jquery/jquery.min",
-    　　"bootstrap": "vendor/bootstrap/js/bootstrap.min",
+    　　"jquery": "https://cdn.bootcss.com/jquery/1.12.4/jquery.min",
+    　　"bootstrap": "https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js",
     }
 });
