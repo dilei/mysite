@@ -24,12 +24,69 @@ class IndexController extends BaseController {
         // $this->setCrontab();
         // $this->delCrontab();
 
+        $params = [
+            'index' => 'php',
+            'type' => 'blog',
+            'body' => [
+                'query' => [
+                    'match' => [
+                        'desc' => '2014'
+                    ]
+                ]
+            ]
+        ];
+        $contents = $this->elsSearch($params);
+        if ($contents["hits"]["total"] > 0) {
+            $this->getView()->assign("contents", $contents["hits"]["hits"]);
+        } else {
+            $this->getView()->assign("contents", "");
+        }
+
 		//4. render by Yaf, 如果这里返回FALSE, Yaf将不会调用自动视图引擎Render模板
         return TRUE;
 	}/*}}}*/
 
     public function aboutAction() {
     }
+
+    public function getallAction() {/*{{{*/
+        if (!file_exists(APPLICATION_PATH."/public/search.xml") || filesize(APPLICATION_PATH."/public/search.xml") == 0) {
+            $doc = new DOMDocument('1.0','UTF-8');
+            $doc->formatOutput=true;               #设置可以输出操作  
+
+            #声明根节点，最好一个XML文件有个跟节点  
+            $root=$doc->createElement("search");    #创建节点对象实体   
+            $root=$doc->appendChild($root);      #把节点添加进来  
+
+            for($i=1;$i<100;$i++){  //循环生成节点，如果数据库调用出来就改这里  
+
+                $info=$doc->createElement("entry");  #创建节点对象实体  
+                $info=$root->appendChild($info);    #把节点添加到root节点的子节点  
+
+                $title = $doc->createElement("title");    #创建节点对象实体         
+                $title = $info->appendChild($title);  
+                $title->appendChild($doc->createTextNode("title".$i));  #createTextNode创建内容的子节点，然后把内容添加到节点中来  
+
+                $url = $doc->createElement("url");  
+                $url = $info->appendChild($url);  
+                $url->appendChild($doc->createTextNode("url".$i)); #注意要转码对于中文，因为XML默认为UTF-8格式  
+
+                $content  = $doc->createElement("content");  
+                $content  = $info->appendChild($content);  
+                $content->appendChild($doc->createTextNode("content".$i)); #注意要转码对于中文，因为XML默认为UTF-8格式  
+
+                $namevalue = $doc->createAttribute("type");  #创建节点属性对象实体   
+                $namevalue = $content->appendChild($namevalue);  #把属性添加到节点info中  
+                $namevalue->appendChild($doc->createTextNode("text"));  
+
+            }     
+            $doc->save(APPLICATION_PATH."/public/search.xml"); #保存路径  
+        }
+
+        header("Content-type: text/xml");
+        echo file_get_contents(APPLICATION_PATH."/public/search.xml");
+        return false;
+    }/*}}}*/
 
     public function setCrontab() {/*{{{*/
         $crontab = new CrontabManager();
@@ -49,7 +106,7 @@ class IndexController extends BaseController {
         $crontab->save();
     }/*}}}*/
 
-    public function elsSetAction() {
+    public function elsSetAction() {/*{{{*/
         $client = Elasticsearch\ClientBuilder::create()->build(); 
         $params = [
             'index' => 'my_index',
@@ -61,9 +118,9 @@ class IndexController extends BaseController {
         $response = $client->index($params);
         print_r($response);
         return false;
-    }
+    }/*}}}*/
 
-    public function elsGetAction() {
+    public function elsGetOne($index, $type, $id) {/*{{{*/
         $params = [
             'index' => 'my_index',
             'type' => 'my_type',
@@ -73,27 +130,22 @@ class IndexController extends BaseController {
         $response = $client->get($params);
         print_r($response);
 
-        return false;
-    }
+        return $response;
+    }/*}}}*/
 
-    public function elsSearchAction() {
-        $params = [
-            'index' => 'my_index',
-            'type' => 'my_type',
-            'body' => [
-                'query' => [
-                    'match' => [
-                        'testField' => 'abc'
-                    ]
-                ]
-            ]
-        ];
+    public function elsMGet($params) {/*{{{*/
+        $client = Elasticsearch\ClientBuilder::create()->build(); 
+        $response = $client->mget($params);
 
+        return $response;
+    }/*}}}*/
+
+    public function elsSearch($params) {
+     
         $client = Elasticsearch\ClientBuilder::create()->build(); 
         $response = $client->search($params);
-        print_r($response);
 
-        return false;
+        return $response;
     }
 
     public function elsDelAction() {
