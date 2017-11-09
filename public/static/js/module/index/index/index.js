@@ -14,10 +14,10 @@ define(['jquery', "bootstrap"], function($) {
             //     $("#search_contents").append("121212121");
             // });
 
-            $('#myModal').on('show.bs.modal', function (e) {
+            $('#myModal').on('show.bs.modal', function (e) {//{{{
                 if (module.isfetched == false) {
                     $.ajax({
-                        url: "/index/getall",
+                        url: "/mysite/index/getall",
                         dataType: "xml",
                         async: true,
                         success: function( xmlResponse ) {
@@ -103,7 +103,18 @@ define(['jquery', "bootstrap"], function($) {
                         },
                     });
                 }
-            });
+            });//}}}
+
+            // 链接websocket服务
+            var wsl= 'ws://120.77.213.24:9501',
+                ws = new WebSocket(wsl);//新建立一个连接
+
+            // 事件绑定
+            ws.onopen = function(){ws.send('Test!'); };  
+            ws.onmessage = function(evt){console.log(evt.data);/*ws.close();*/};  
+            ws.onclose = function(evt){console.log('WebSocketClosed!');};  
+            ws.onerror = function(evt){console.log('WebSocketError!');}; 
+
         },
 
         handle: {

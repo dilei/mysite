@@ -11,6 +11,19 @@ class IndexController extends BaseController {
      * 默认动作
      */
 	public function indexAction($name = "home") {/*{{{*/
+        $contents = [
+            ["_source" => ["title" => "yaceshuju1", "content" => "yacecontent"]], 
+            ["_source" => ["title" => "yaceshuju2", "content" => "yacecontent"]], 
+            ["_source" => ["title" => "yaceshuju3", "content" => "yacecontent"]], 
+            ["_source" => ["title" => "yaceshuju4", "content" => "yacecontent"]], 
+            ["_source" => ["title" => "yaceshuju5", "content" => "yacecontent"]], 
+            ["_source" => ["title" => "yaceshuju6", "content" => "yacecontent"]], 
+            ["_source" => ["title" => "yaceshuju7", "content" => "yacecontent"]], 
+            ["_source" => ["title" => "yaceshuju8", "content" => "yacecontent"]], 
+        ];
+		$this->getView()->assign("contents", $contents);
+        return true;
+
 		//1. fetch query
 		$get = $this->getRequest()->getQuery("get", "default value");
 
@@ -30,7 +43,7 @@ class IndexController extends BaseController {
             'body' => [
                 'query' => [
                     'match' => [
-                        'desc' => '2014'
+                        'content' => 'search'
                     ]
                 ]
             ]
@@ -116,6 +129,33 @@ class IndexController extends BaseController {
         ];
 
         $response = $client->index($params);
+        print_r($response);
+        return false;
+    }/*}}}*/
+
+    public function elsBlukAction() {/*{{{*/
+        $client = Elasticsearch\ClientBuilder::create()->build(); 
+
+        //bulk批量生成  
+        $bulk = array('index'=>'php','type'=>'blog');  
+        for($i = 1; $i <= 1000; $i ++) {  
+            $bulk['body'][]=array(  
+                'index' => array(  
+                    '_id'=>$i  
+                ),  
+            );  
+
+            $bulk['body'][] = array(  
+                'title'   => "els get started",  
+                'url'     => 'https://idilei.com',  
+                'content' => "Elasticsearch is a highly scalable open-source full-text search 
+                and analytics engine. It allows you to store, search, and analyze big volumes 
+                of data quickly and in near real time. It is generally used as the underlying 
+                engine/technology that powers applications that have complex search features 
+                and requirements.",  
+            );  
+        }  
+        $response = $client->bulk($bulk);  
         print_r($response);
         return false;
     }/*}}}*/
